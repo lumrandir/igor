@@ -1,0 +1,4 @@
+User
+    login Text
+    encryptedPassword Text
+    UniqueUser login

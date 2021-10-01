@@ -2,6 +2,7 @@
 {-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE RecordWildCards   #-}
 {-# LANGUAGE TemplateHaskell   #-}
+{-# LANGUAGE UnicodeSyntax     #-}
 {-# OPTIONS_GHC -fno-warn-orphans #-}
 
 module Application
@@ -33,7 +34,7 @@ import           System.Log.FastLogger                (defaultBufSize,
 
 mkYesodDispatch "App" resourcesApp
 
-appMain :: IO ()
+appMain ∷ IO ()
 appMain = do
   settings <- loadYamlSettingsArgs
       [configSettingsYmlValue]
@@ -45,13 +46,13 @@ appMain = do
 
   runSettings (warpSettings foundation) app
 
-makeApplication :: App -> IO Application
+makeApplication ∷ App → IO Application
 makeApplication foundation = do
   logWare <- makeLogWare foundation
   appPlain <- toWaiAppPlain foundation
   return $ logWare $ defaultMiddlewaresNoLogging appPlain
 
-makeLogWare :: App -> IO Middleware
+makeLogWare ∷ App → IO Middleware
 makeLogWare foundation =
   mkRequestLogger def
     { outputFormat =
@@ -64,7 +65,7 @@ makeLogWare foundation =
     , destination = Logger $ loggerSet $ appLogger foundation
     }
 
-makeFoundation :: AppSettings -> IO App
+makeFoundation ∷ AppSettings → IO App
 makeFoundation appSettings = do
   appHttpManager <- getGlobalManager
   appLogger <- newStdoutLoggerSet defaultBufSize >>= makeYesodLogger
@@ -84,7 +85,7 @@ makeFoundation appSettings = do
 
   return $ mkFoundation pool
 
-warpSettings :: App -> Settings
+warpSettings ∷ App → Settings
 warpSettings foundation =
     setPort (appPort $ appSettings foundation)
   $ setHost (appHost $ appSettings foundation)

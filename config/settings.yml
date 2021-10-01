@@ -2,6 +2,7 @@ static-dir: "static"
 host: "*4"
 port: 3000
 ip-from-header: false
+detailed-logging: true
 
 database:
   user: "_env:DATABASE_USER:igor"
