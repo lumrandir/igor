@@ -23,6 +23,7 @@ dependencies:
 - persistent
 - persistent-postgresql
 - persistent-template
+- shakespeare
 - template-haskell
 - wai
 - wai-extra
@@ -38,7 +39,7 @@ library:
     then:
       ghc-options:
       - -Wall
-      - -Werr
+      - -Werror
       - -fwarn-tabs
       - -O0
       cpp-options: -DDEVELOPMENT

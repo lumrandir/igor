@@ -13,6 +13,7 @@ module Foundation where
 
 import           Database.Persist.Sql (ConnectionPool)
 import           Import.NoFoundation
+import           Text.Hamlet          (hamletFile)
 import           Yesod.Core.Types     (Logger)
 
 data App
@@ -42,3 +43,9 @@ instance Yesod App where
 
   yesodMiddleware ∷ ToTypedContent res ⇒ Handler res → Handler res
   yesodMiddleware = defaultYesodMiddleware . defaultCsrfMiddleware
+
+  defaultLayout ∷ Widget → Handler Html
+  defaultLayout widget = do
+    pc <- widgetToPageContent $ do
+      $(widgetFile "default-layout")
+    withUrlRenderer $(hamletFile "templates/default-layout-wrapper.hamlet")

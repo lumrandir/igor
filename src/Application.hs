@@ -7,12 +7,15 @@
 
 module Application
   ( appMain
+  , develMain
   ) where
 
 import           Control.Monad.Logger                 (liftLoc, runLoggingT)
 import           Database.Persist.Postgresql          (createPostgresqlPool,
                                                        pgConnStr, pgPoolSize,
                                                        runSqlPool)
+import           Handler.Common
+import           Handler.Home
 import           Import
 import           Language.Haskell.TH.Syntax           (qLocation)
 import           Network.HTTP.Client.TLS              (getGlobalManager)
@@ -45,6 +48,20 @@ appMain = do
   app <- makeApplication foundation
 
   runSettings (warpSettings foundation) app
+
+develMain ∷ IO ()
+develMain = develMainHelper getApplicationDev
+
+getApplicationDev ∷ IO (Settings, Application)
+getApplicationDev = do
+  settings <- getAppSettings
+  foundation <- makeFoundation settings
+  wsettings <- getDevSettings $ warpSettings foundation
+  app <- makeApplication foundation
+  return (wsettings, app)
+
+getAppSettings ∷ IO AppSettings
+getAppSettings = loadYamlSettings [configSettingsYml] [] useEnv
 
 makeApplication ∷ App → IO Application
 makeApplication foundation = do
