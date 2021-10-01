@@ -1,0 +1,84 @@
+name:    igor
+version: "0.1.0"
+homepage: https://github.com/lumrandir/igor#readme
+license:  BSD3
+license-file: LICENSE
+author: Konstantin Lukinskikh
+maintainer: lumrandir@lumrandir.su
+copyright: 2021 Konstantin Lukinskikh
+extra-source-files: README.md
+
+dependencies:
+
+- aeson
+- base >=4.9.1.0 && <5
+- bytestring
+- classy-prelude >=1.5 && <1.6
+- classy-prelude-conduit >=1.5 && <1.6
+- classy-prelude-yesod >=1.5 && <1.6
+- fast-logger
+- file-embed
+- http-client-tls
+- monad-logger
+- persistent
+- persistent-postgresql
+- persistent-template
+- template-haskell
+- wai
+- wai-extra
+- warp
+- yaml
+- yesod
+- yesod-core >=1.6 && <1.7
+
+library:
+  source-dirs: src
+  when:
+  - condition: (flag(dev)) || (flag(library-only))
+    then:
+      ghc-options:
+      - -Wall
+      - -Werr
+      - -fwarn-tabs
+      - -O0
+      cpp-options: -DDEVELOPMENT
+    else:
+      ghc-options:
+      - -Wall
+      - -Werror
+      - -fwarn-tabs
+      - -O2
+
+executables:
+  igor:
+    main: Main.hs
+    source-dirs: app
+    ghc-options:
+    - -threaded
+    - -rtsopts
+    - -with-rtsopts=-N
+    dependencies:
+    - igor
+    when:
+    - condition: flag(library-only)
+      buildable: false
+
+tests:
+  igor-test:
+    main: Spec.hs
+    source-dirs: test
+    ghc-options: -Wall
+    dependencies:
+    - igor
+    - hspec >=2.0.0
+    - yesod-test
+
+flags:
+  library-only:
+    description: Build for use with "yesod devel"
+    manual: false
+    default: false
+  dev:
+    description: Turn on development settings, like auto-reload templates.
+    manual: false
+    default: false

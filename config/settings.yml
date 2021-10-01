@@ -1,0 +1,12 @@
+static-dir: "static"
+host: "*4"
+port: 3000
+ip-from-header: false
+
+database:
+  user: "_env:DATABASE_USER:igor"
+  password: "_env:DATABASE_PASS:igor"
+  host: "_env:DATABASE_HOST:localhost"
+  port: "_env:DATABASE_PORT:5432"
+  database: "_env:DATABASE_NAME:igor"
+  poolsize: "_env:DATABASE_POOL:10"
