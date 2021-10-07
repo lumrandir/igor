@@ -2,4 +2,5 @@
 
 /favicon.ico FaviconR GET
 
-/ HomeR GET
+/ RootR GET
+

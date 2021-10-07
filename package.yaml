@@ -13,9 +13,11 @@ dependencies:
 - aeson
 - base >=4.9.1.0 && <5
 - bytestring
+- case-insensitive
 - classy-prelude >=1.5 && <1.6
 - classy-prelude-conduit >=1.5 && <1.6
 - classy-prelude-yesod >=1.5 && <1.6
+- cookie
 - fast-logger
 - file-embed
 - http-client-tls
@@ -25,6 +27,7 @@ dependencies:
 - persistent-template
 - shakespeare
 - template-haskell
+- text
 - wai
 - wai-extra
 - warp

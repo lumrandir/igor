@@ -11,9 +11,12 @@
 
 module Foundation where
 
+import qualified Data.CaseInsensitive as CI
+import qualified Data.Text.Encoding   as TE
 import           Database.Persist.Sql (ConnectionPool)
 import           Import.NoFoundation
 import           Text.Hamlet          (hamletFile)
+import           Web.Cookie
 import           Yesod.Core.Types     (Logger)
 
 data App
@@ -37,15 +40,33 @@ instance Yesod App where
        Just root -> root
 
   makeSessionBackend ∷ App → IO (Maybe SessionBackend)
-  makeSessionBackend _ = Just <$> defaultClientSessionBackend
+  makeSessionBackend _ = strictSameSiteSessions $ Just <$> defaultClientSessionBackend
     120
     "config/client_session_key.aes"
 
   yesodMiddleware ∷ ToTypedContent res ⇒ Handler res → Handler res
-  yesodMiddleware = defaultYesodMiddleware . defaultCsrfMiddleware
+  yesodMiddleware =
+    defaultYesodMiddleware
+    . setRoutedCsrfCookieMiddleware
+    . defaultCsrfCheckMiddleware
+
 
   defaultLayout ∷ Widget → Handler Html
   defaultLayout widget = do
     pc <- widgetToPageContent $ do
       $(widgetFile "default-layout")
     withUrlRenderer $(hamletFile "templates/default-layout-wrapper.hamlet")
+
+setRoutedCsrfCookieMiddleware ∷ ToTypedContent res ⇒ Handler res → Handler res
+setRoutedCsrfCookieMiddleware app = do
+  maybeRoute <- getCurrentRoute
+  let skip = case maybeRoute of
+               Just FaviconR -> True
+               Nothing       -> True
+               _             -> False
+  let cookie = defaultSetCookie { setCookieName = defaultCsrfCookieName
+                                , setCookiePath = Just "/"
+                                , setCookieSameSite = Just sameSiteStrict
+                                }
+  if skip then app
+          else csrfSetCookieMiddleware app cookie
