@@ -12,6 +12,7 @@
 module Foundation where
 
 import qualified Data.CaseInsensitive as CI
+import           Data.Kind            (Type)
 import qualified Data.Text.Encoding   as TE
 import           Database.Persist.Sql (ConnectionPool)
 import           Import.NoFoundation
@@ -30,7 +31,7 @@ data App
 
 mkYesodData "App" $(parseRoutesFile "config/routes")
 
-type DB a = forall (m :: * → *). MonadUnliftIO m ⇒ ReaderT SqlBackend m a
+type DB a = forall (m :: Type → Type). MonadUnliftIO m ⇒ ReaderT SqlBackend m a
 
 instance Yesod App where
   approot ∷ Approot App
