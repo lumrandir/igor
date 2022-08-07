@@ -8,4 +8,10 @@ $newline never
 
     <script>
       var csrfHeaderName = "#{TE.decodeUtf8 $ CI.foldedCase defaultCsrfHeaderName}";
+      var csrfCookieName = "#{TE.decodeUtf8 defaultCsrfCookieName}";
+    ^{pageHead pc}
+  <body>
+    <div id="elm-app">
+    ^{pageBody pc}
+
 

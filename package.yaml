@@ -34,6 +34,7 @@ dependencies:
 - yaml
 - yesod
 - yesod-core >=1.6 && <1.7
+- yesod-static
 
 library:
   source-dirs: src

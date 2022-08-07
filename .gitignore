@@ -2,4 +2,7 @@ igor.cabal
 .stack-work/
 config/client_session_key.aes
 yesod-devel/
-elm/elm-stuff/
+assets/elm/elm-stuff/
+assets/node_modules
+static/js
+static/css

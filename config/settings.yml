@@ -3,7 +3,7 @@ host: "*4"
 port: 3000
 ip-from-header: false
 detailed-logging: true
-approot: "_env:APP_ROOT:http://localhost"
+approot: "_env:APP_ROOT:http://localhost:3000"
 
 database:
   user: "_env:DATABASE_USER:igor"
